@@ -24,3 +24,7 @@ Route::get('/words', [
     'uses' => 'wordController@index',
     'as' => 'words'
 ]);
+Route::get('/search', [
+    'uses' => 'wordController@search',
+    'as' => 'search'
+]);

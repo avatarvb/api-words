@@ -28,6 +28,32 @@ class wordController extends Controller
         );
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+
+        $data =  DB::table('entries')->where('word', 'like', "%$query%")->get();
+
+
+        if ($data->count() > 0) {
+            return response()->json(
+                array(
+                    'status' => 'success',
+                    'words' => $data->toArray()
+                ),
+                201
+            );
+        } else {
+            return response()->json(
+                array(
+                    'status' => 'error',
+                    'words' => 'NO DATA'
+                ),
+                404
+            );
+        }
+    }
+
 
 
     /**
