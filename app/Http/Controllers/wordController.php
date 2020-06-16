@@ -32,13 +32,27 @@ class wordController extends Controller
     {
         $query = $request->get('query');
 
-        $data =  DB::table('entries')->where('word', 'like', "%$query%")->get();
 
+        if (strlen($query) < 3) {
+            return response()->json(
+                array(
+                    'status' => 'error',
+                    'keys' => $query,
+                    'message' => 'must be at least 3 characters'
+                ),
+                201
+            );
+        }
+
+
+        $data =  DB::table('entries')->where('word', 'like', "%$query%")->get();
 
         if ($data->count() > 0) {
             return response()->json(
                 array(
                     'status' => 'success',
+                    'keys' => $query,
+                    'count' => $data->count(),
                     'words' => $data->toArray()
                 ),
                 201
@@ -47,6 +61,7 @@ class wordController extends Controller
             return response()->json(
                 array(
                     'status' => 'error',
+                    'count' => $data->count(),
                     'words' => 'NO DATA'
                 ),
                 404
